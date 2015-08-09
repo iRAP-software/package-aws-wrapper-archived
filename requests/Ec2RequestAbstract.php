@@ -77,7 +77,7 @@ abstract class Ec2RequestAbstract
         $debugMsg = "response for " . get_called_class() . ' request: ' . PHP_EOL .
                     print_r($response, true);
         
-        \Irap\CoreLibs\Core::debug_println($debugMsg);
+        \iRAP\CoreLibs\Core::debugPrintln($debugMsg);
         
         /* @var $response ResponseCore */
         if (!$response->isOK())

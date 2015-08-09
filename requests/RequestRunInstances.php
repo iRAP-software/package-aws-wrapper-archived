@@ -35,8 +35,8 @@ class RequestRunInstances extends Ec2RequestAbstract
      * @param LaunchSpecification $launch_specification - the launch specification of the request
      *                                                   refer to that object for details.
      */
-    public function __construct(\Irap\AwsWrapper\Enums\AmazonRegion $region,
-                                \Irap\AwsWrapper\Objects\LaunchSpecification $launch_specification,
+    public function __construct(\iRAP\AwsWrapper\Enums\AmazonRegion $region,
+                                \iRAP\AwsWrapper\Objects\LaunchSpecification $launch_specification,
                                 $maxCount, 
                                 $minCount)
     {
@@ -192,7 +192,7 @@ class RequestRunInstances extends Ec2RequestAbstract
             
             foreach ($ec2InstanceStdObjs as $ec2StdObj)
             {
-                $this->m_generated_instances[] = \Irap\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($ec2StdObj);
+                $this->m_generated_instances[] = \iRAP\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($ec2StdObj);
             }
         }
         
