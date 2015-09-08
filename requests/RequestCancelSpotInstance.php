@@ -17,7 +17,7 @@ class RequestCancelSpotInstance extends Ec2RequestAbstract
      * @param AmazonRegion $region - the region the spot requests were made to.
      * @param mixed $spot_request_id - a single spot request id, or an array list of spot request ids.
      */
-    public function __construct(\Irap\AwsWrapper\Enums\AmazonRegion $region, $spot_request_id)
+    public function __construct(\iRAP\AwsWrapper\Enums\AmazonRegion $region, $spot_request_id)
     {
         $this->m_region     = $region;
         $this->m_request_id = $spot_request_id;

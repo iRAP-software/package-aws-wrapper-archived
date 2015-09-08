@@ -35,10 +35,10 @@ class RequestSpotInstance extends Ec2RequestAbstract
      *                                                   refer to that object for details.
      * @param int $num_instances - the number of spot instances you wish to launch.
      */
-    public function __construct(\Irap\AwsWrapper\Enums\AmazonRegion $availability_zone, 
-                                \Irap\AwsWrapper\Enums\SpotInstanceType $spot_instance_type, 
+    public function __construct(\iRAP\AwsWrapper\Enums\AmazonRegion $availability_zone, 
+                                \iRAP\AwsWrapper\Enums\SpotInstanceType $spot_instance_type, 
                                 $price,
-                                \Irap\AwsWrapper\Objects\LaunchSpecification $launch_specification,
+                                \iRAP\AwsWrapper\Objects\LaunchSpecification $launch_specification,
                                 $num_instances)
     {
         self::validate_price($price);

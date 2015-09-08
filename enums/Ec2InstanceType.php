@@ -29,11 +29,11 @@ class Ec2InstanceType
     /**
      * Create a t2 (burstable) intance
      * @param int $size
-     * @return \Irap\AwsWrapper\Enums\Ec2InstanceType
+     * @return Ec2InstanceType
      */
     public static function create_t2($size)
     {
-        $size = \Irap\CoreLibs\Core::clamp_value($size, 3, 1);
+        $size = \iRAP\CoreLibs\Core::clampValue($size, 3, 1);
         
         switch ($size)
         {

@@ -25,7 +25,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
      *                             representing a single one.
      * @return RequestDescribeInstances
      */
-    public function __construct(\Irap\AwsWrapper\Enums\AmazonRegion $region, $instance_ids=array())
+    public function __construct(\iRAP\AwsWrapper\Enums\AmazonRegion $region, $instance_ids=array())
     {
         $this->m_region = $region;
         
@@ -79,7 +79,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
             {
                 foreach ($item->instancesSet->item as $instanceSetItem)
                 {
-                    $ec2Instance = \Irap\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($instanceSetItem);
+                    $ec2Instance = \iRAP\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($instanceSetItem);
                     $this->m_instances[] = $ec2Instance;
                     $this->m_returned_instance_ids[] = $ec2Instance->get_instance_id();     
                 }
@@ -103,10 +103,10 @@ class RequestDescribeInstances extends Ec2RequestAbstract
     
     /**
      * Set a filter for the instances we wish to retrieve.
-     * @param \Irap\AwsWrapper\Objects\AmazonFilter $filter
+     * @param \iRAP\AwsWrapper\Objects\AmazonFilter $filter
      * @return void.
      */
-    public function set_filter(\Irap\AwsWrapper\Objects\AmazonFilter $filter)
+    public function set_filter(\iRAP\AwsWrapper\Objects\AmazonFilter $filter)
     {
         $this->m_filter = $filter;
     }
