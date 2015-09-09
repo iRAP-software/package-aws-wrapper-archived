@@ -1,10 +1,10 @@
 <?php
 
-namespace iRAP\AwsWrapper\Objects;
-
 /* 
  * This object represents an ec2 instance as described from a describeInstances request.
  */
+
+namespace iRAP\AwsWrapper\Ec2;
 
 class Ec2Instance
 {
