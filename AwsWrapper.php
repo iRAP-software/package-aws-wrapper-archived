@@ -13,20 +13,30 @@ class AwsWrapper
     private $m_secret;
     private $m_region;
     
-    public function __construct($api_key, $secret, Enums\AmazonRegion $region)
+    public function __construct($api_key, $secret, Enums\AwsRegion $region)
     {
         $this->m_apiKey = $api_key;
         $this->m_secret = $secret;
         $this->m_region = $region;
     }
     
+    
+    /**
+     * Fetch a client for interfacing with S3
+     * @return S3\S3Client
+     */
     public function getS3Client()
     {
-        return new S3Client($apiKey, $apSecret, $region);
+        return new S3\S3Client($this->m_apiKey, $this->m_secret, $this->m_region);
     }
     
+    
+    /**
+     * 
+     * @return S3\S3Client
+     */
     public function getEc2Client()
     {
-        return new S3Client($apiKey, $apSecret, $region);
+        return new Ec2\Ec2Client($this->m_apiKey, $this->m_secret, $this->m_region);
     }
 }

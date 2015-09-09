@@ -21,9 +21,13 @@
     },
     "autoload": {
         "psr-4": {
+            "iRAP\\AwsWrapper\\": "",
             "iRAP\\AwsWrapper\\Enums\\": "enums/",
             "iRAP\\AwsWrapper\\Objects\\": "objects/",
-            "iRAP\\AwsWrapper\\Requests\\": "requests/"
+            "iRAP\\AwsWrapper\\Requests\\": "requests/",
+            "iRAP\\AwsWrapper\\S3\\": "S3/",
+            "iRAP\\AwsWrapper\\Ec2\\": "Ec2/"
+            
         }
     }
 }

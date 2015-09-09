@@ -35,7 +35,7 @@ class RequestRunInstances extends Ec2RequestAbstract
      * @param LaunchSpecification $launch_specification - the launch specification of the request
      *                                                   refer to that object for details.
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\AmazonRegion $region,
+    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $region,
                                 \iRAP\AwsWrapper\Objects\LaunchSpecification $launch_specification,
                                 $maxCount, 
                                 $minCount)

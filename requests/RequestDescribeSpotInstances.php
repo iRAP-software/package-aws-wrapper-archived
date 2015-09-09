@@ -26,7 +26,7 @@ class RequestDescribeSpotInstances extends Ec2RequestAbstract
      *                                This can be a string representing a single instance, or an
      *                                array list of instances.
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\AmazonRegion $region, $spot_instance_id=array())
+    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $region, $spot_instance_id=array())
     {
         $this->m_region = $region;
         

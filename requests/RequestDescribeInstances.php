@@ -25,7 +25,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
      *                             representing a single one.
      * @return RequestDescribeInstances
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\AmazonRegion $region, $instance_ids=array())
+    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $region, $instance_ids=array())
     {
         $this->m_region = $region;
         
