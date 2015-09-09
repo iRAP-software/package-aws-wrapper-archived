@@ -8,7 +8,7 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 function main()
 {
-    require_once(__DIR__ . '/../settings.php');
+    require_once(__DIR__ . '/Settings.php');
     $api_key = 
     $secret =  
     $region = ;
