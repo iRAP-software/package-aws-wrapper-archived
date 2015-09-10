@@ -51,7 +51,7 @@ class Ec2Instance
      * @param type $ec2Instance
      * @return Ec2Instance
      */
-    public static function create_from_aws_item($item)
+    public static function createFromAwsItem($item)
     {
         $ec2Instance = new Ec2Instance();
         
@@ -96,11 +96,11 @@ class Ec2Instance
     }
     
     
-    public function get_instance_id()     { return $this->m_instance_id; }
-    public function get_state_string()    { return $this->m_instance_state_name; }
-    public function get_deployment_time() { return $this->m_launch_time; }
+    public function getInstanceId()     { return $this->m_instance_id; }
+    public function getStateString()    { return $this->m_instance_state_name; }
+    public function getDeploymentTime() { return $this->m_launch_time; }
     
     # These accessors may not have a value.
-    public function get_spot_instance_request_id() { return $this->m_spot_instance_request_id; }
+    public function getSpotInstanceRequestId() { return $this->m_spot_instance_request_id; }
 }
 
