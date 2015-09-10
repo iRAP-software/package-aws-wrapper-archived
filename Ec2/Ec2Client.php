@@ -59,7 +59,7 @@ class Ec2Client
     }
     
     
-    public function CancelSpotInstanceRequests()
+    public function cancelSpotInstanceRequests()
     {
         
     }
@@ -69,7 +69,7 @@ class Ec2Client
      * 
      * http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-ec2-2015-04-15.html#describeinstances
      */
-    public function DescribeInstances()
+    public function describeInstances()
     {
         
     }
@@ -79,7 +79,7 @@ class Ec2Client
      * Launch some on demand instances (fixed price).
      * http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-ec2-2015-04-15.html#runinstances
      */
-    public function RunInstances(\iRAP\AwsWrapper\Requests\RequestRunInstances $request)
+    public function runInstances(\iRAP\AwsWrapper\Requests\RequestRunInstances $request)
     {
         return $request->send($this->m_client);        
     }
@@ -88,19 +88,19 @@ class Ec2Client
     /**
      * Alias for RunInstances
      */
-    public function RequestOnDemandInstances()
+    public function requestOnDemandInstances()
     {
-        $this->RunInstances();
+        $this->runInstances();
     }
     
     
-    public function RequestSpotInstances()
+    public function requestSpotInstances()
     {
         
     }
     
     
-    public function RequestSpotFleet()
+    public function requestSpotFleet()
     {
         
     }
@@ -108,19 +108,19 @@ class Ec2Client
     /**
      * http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-ec2-2015-04-15.html#startinstances
      */
-    public function StartInstances()
+    public function startInstances()
     {
         
     }
     
     
-    public function StopInstances()
+    public function stopInstances()
     {
         
     }
     
     
-    public function TerminateInstances()
+    public function terminateInstances()
     {
         
     }
