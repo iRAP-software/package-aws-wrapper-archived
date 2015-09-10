@@ -16,7 +16,7 @@ class LaunchSpecification
     private $m_securityGroup;
     private $m_ebsOptimized = false;
     private $m_groupSet = null;
-    private $m_networkInterfaceSet = array();
+    private $m_networkInterfaces = array();
     private $m_blockDevices = array();
     private $m_ramDiskId = null;
     private $m_kernelId = null;
@@ -30,14 +30,14 @@ class LaunchSpecification
      * Create the LaunchSpecification.
      * Note that only the required fields are in the parameters, there are many more options that
      * can be defined through the public methods, such as addNetworkInterface().
-     * @param Ec2InstanceType $instance_type - the type of instance (size) to launch
-     * @param String $image_id - the ID of the image we are going to launch
+     * @param Ec2InstanceType $instanceType - the type of instance (size) to launch
+     * @param String $imageId - the ID of the image we are going to launch
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\Ec2InstanceType $instance_type, $image_id)
+    public function __construct(\iRAP\AwsWrapper\Enums\Ec2InstanceType $instanceType, $imageId)
     {
-        self::validateImageId($image_id);
-        $this->m_instanceType = $instance_type;
-        $this->m_image_id = $image_id;
+        self::validateImageId($imageId);
+        $this->m_instanceType = $instanceType;
+        $this->m_image_id = $imageId;
     }
     
     
@@ -132,7 +132,7 @@ class LaunchSpecification
     
     public function addNetworkInterface(NetworkInterface $networkInterface)
     {
-        $this->m_networkInterfaceSet[] = $networkInterface;
+        $this->m_networkInterfaces[] = $networkInterface;
     }
     
     
@@ -189,7 +189,7 @@ class LaunchSpecification
         
         if (isset($this->m_securityGroup))
         {
-            $arrayForm['SecurityGroup'] = $this->m_securityGroup;
+            $arrayForm['SecurityGroupIds'] = array($this->m_securityGroup);
         }
         
         if (isset($this->m_userData))
@@ -229,7 +229,7 @@ class LaunchSpecification
         
         if ($this->m_monitoringEnabled)
         {
-            $arrayForm['Monitoring.Enabled'] = $this->m_monitoringEnabled;
+            $arrayForm['Monitoring'] = array('Enabled'=> $this->m_monitoringEnabled);
         }
         
         
@@ -238,17 +238,17 @@ class LaunchSpecification
             $arrayForm['SubnetId'] = $this->m_subnetId;
         }
         
-        if (count($this->m_networkInterfaceSet) > 0)
+        if (count($this->m_networkInterfaces) > 0)
         {
             $networkInterfaces = array();
             
-            foreach ($this->m_networkInterfaceSet as $network_interface)
+            foreach ($this->m_networkInterfaces as $network_interface)
             {
                 /* @var $network_interface NetworkInterface */
                 $networkInterfaces[] = $network_interface->to_array();
             }
             
-            $arrayForm['NetworkInterfaceSet'] = $networkInterfaces;
+            $arrayForm['NetworkInterfaces'] = $networkInterfaces;
         }
         
         if (count($this->m_iamProfile) > 0)
