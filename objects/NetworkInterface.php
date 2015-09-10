@@ -12,24 +12,26 @@ namespace iRAP\AwsWrapper\Objects;
 
 class NetworkInterface
 {
-    private $m_network_interface_id;
-    private $m_device_index;
-    private $m_subnet_id;
+    private $m_networkInterfaceId;
+    private $m_assosciatePublicIpAddress;
+    private $m_deviceIndex;
+    private $m_subnetId;
     private $m_description;
-    private $m_security_group_id; # - string|array - Pass a string for a single value, or an indexed array for multiple values.
-    private $m_delete_on_termination; # - boolean - Optional -
-    private $m_private_ip_address = array();
-    private $m_secondary_private_ip_address_count;
+    private $m_securityGroupId; # - string|array - Pass a string for a single value, or an indexed array for multiple values.
+    private $m_deleteOnTermination = false; # - boolean - Optional -
+    private $m_privateIpAddress = array();
+    private $m_secondaryPrivateIpAddress;
     
     
     /**
      * 
      * @param type $network_interface_id - the id of the network interface to attach to.
-     * @param type $device_index - ???
-     * @param type $subnet_id
-     * @param Array<PrivateIp> $private_ip_addresses
-     * @param type $security_group_id
-     * @param bool $delete_on_termination - flag indicating whether this interface should be destroyed
+     * @param bool $assosciatePublicIp - whether to dynamically allocate a public ip to the NIC.
+     * @param type $deviceIndex - ???
+     * @param type $subnetId
+     * @param Array<PrivateIp> $privateIp
+     * @param type $securityGroupId
+     * @param bool $deleteOnTermination - flag indicating whether this interface should be destroyed
      *                                    when the ec2 instance is terminate.
      * @param int $secondary_private_ip_address_count - The number of secondary private IP addresses 
      *                                              that Amazon EC2 automatically assigns to the 
@@ -41,25 +43,27 @@ class NetworkInterface
      * param String $description - optionally set a description for the interface.
      */
     public function __construct($network_interface_id,
-                                $device_index,
-                                $subnet_id,
-                                $private_ip_addresses,
-                                $security_group_id,
-                                $delete_on_termination,
+                                $assosciatePublicIp,
+                                $deviceIndex,
+                                $subnetId,
+                                $privateIp,
+                                $securityGroupId,
+                                $deleteOnTermination,
                                 $secondary_private_ip_address_count,
                                 $description='')
     {
         self::validate_secondary_ip_addresss_count($secondary_private_ip_address_count);
-        self::validate_ip_addresses($private_ip_addresses, $secondary_private_ip_address_count);
+        self::validate_ip_addresses($privateIp, $secondary_private_ip_address_count);
         
-        $this->m_private_ip_address = $private_ip_addresses;
-        $this->m_network_interface_id = $network_interface_id;
-        $this->m_device_index = $device_index;
-        $this->m_subnet_id = $subnet_id;
+        $this->m_assosciatePublicIpAddress = $assosciatePublicIp;
+        $this->m_privateIpAddress = $privateIp;
+        $this->m_networkInterfaceId = $network_interface_id;
+        $this->m_deviceIndex = $deviceIndex;
+        $this->m_subnetId = $subnetId;
         
-        $this->m_delete_on_termination = $delete_on_termination;
-        $this->m_secondary_private_ip_address_count = $secondary_private_ip_address_count;
-        $this->m_security_group_id = $security_group_id;
+        $this->m_deleteOnTermination = $deleteOnTermination;
+        $this->m_secondaryPrivateIpAddress = $secondary_private_ip_address_count;
+        $this->m_securityGroupId = $securityGroupId;
         $this->m_description = $description;
     }
     
@@ -72,29 +76,26 @@ class NetworkInterface
     {
         $privateIps = array();
         
-        foreach ($this->m_private_ip_address as $ip)
+        foreach ($this->m_privateIpAddress as $ip)
         {
             /* $ip PrivateIp */
             $privateIps[] = $ip->toArray();
         }
         
         $array_form = array(
-            'NetworkInterfaceId'             => $this->m_network_interface_id,
-            'DeviceIndex'                    => $this->m_device_index,
-            'SubnetId'                       => $this->m_subnet_id,
+            'NetworkInterfaceId'             => $this->m_networkInterfaceId,
+            'AssociatePublicIpAddress'       => $this->m_assosciatePublicIpAddress,
+            'DeviceIndex'                    => $this->m_deviceIndex,
+            'SubnetId'                       => $this->m_subnetId,
             'Description'                    => $this->m_description,
-            'SecurityGroupId'                => $this->m_security_group_id,
-            'SecondaryPrivateIpAddressCount' => $this->m_secondary_private_ip_address_count
+            'SecurityGroupId'                => $this->m_securityGroupId,
+            'SecondaryPrivateIpAddressCount' => $this->m_secondaryPrivateIpAddress,
+            'DeleteOnTermination'            => $this->m_deleteOnTermination,
         );
         
         if (count($privateIps) > 0)
         {
             $array_form['PrivateIpAddresses']  = $privateIps;
-        }
-        
-        if ($this->m_delete_on_termination)
-        {
-            $array_form['DeleteOnTermination'] = true;
         }
         
         return $array_form;
