@@ -61,17 +61,10 @@ function main()
     
     print_r($secondUploadResult);
     
-    
-    
     # Delete the file.
     
     
     # Delete the bucket (it doesnt have to be empty)
-    
-    
 }
-
-
-
 
 main();
