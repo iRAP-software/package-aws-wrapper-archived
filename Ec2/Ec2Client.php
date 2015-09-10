@@ -76,101 +76,12 @@ class Ec2Client
     
     
     /**
+     * Launch some on demand instances (fixed price).
      * http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-ec2-2015-04-15.html#runinstances
      */
-    
-    /**
-     * 
-     * @param \iRAP\AwsWrapper\Objects\BlockDeviceMapping $blockDeviceMapping
-     * @param type $imageId
-     * @param \iRAP\AwsWrapper\Enums\Ec2InstanceType $instanceType
-     * @param type $dryRun
-     * @param type $kernelId
-     * @param bool $disableApiTermination 
-     * @param int $maxCount
-     * @param int $minCount
-     * @param bool $monitoringEnabled;
-     */
-    public function RunInstances(\iRAP\AwsWrapper\Objects\BlockDeviceMapping $blockDeviceMapping,
-                                 $imageId,
-                                 \iRAP\AwsWrapper\Enums\Ec2InstanceType $instanceType,
-                                 \iRAP\AwsWrapper\Objects\Placement $placement,
-                                 $dryRun = false,
-                                 $ebsOptimized = false,
-                                 $kernelId = '',
-                                 $ramDiskId = '',
-                                 $disableApiTermination,
-                                 $maxCount,
-                                 $minCount,
-                                 $monitoringEnabled = false,
-                                 $subnetId,
-                                 $privateIpAddress = '',
-                                )
+    public function RunInstances(\iRAP\AwsWrapper\Requests\RequestRunInstances $request)
     {
-        $params = array(
-            'BlockDeviceMappings' => $blockDeviceMapping->toArray(),
-            'ClientToken' => '<string>',
-            'DisableApiTermination' => $disableApiTermination,
-            'DryRun' => $dryRun,
-            'EbsOptimized' => $ebsOptimized,
-            'IamInstanceProfile' => [
-                'Arn' => '<string>',
-                'Name' => '<string>',
-            ],
-            'ImageId' => $imageId, // REQUIRED
-            'InstanceInitiatedShutdownBehavior' => 'stop|terminate',
-            'InstanceType' => (string) $instanceType,
-            
-            'KeyName' => '<string>',
-            'MaxCount' => $maxCount, // REQUIRED
-            'MinCount' => $minCount, // REQUIRED
-            'Monitoring' => [
-                'Enabled' => $monitoringEnabled, // REQUIRED
-            ],
-            'NetworkInterfaces' => [
-                [
-                    'AssociatePublicIpAddress' => true || false,
-                    'DeleteOnTermination' => true || false,
-                    'Description' => '<string>',
-                    'DeviceIndex' => <integer>,
-                    'Groups' => ['<string>', ...],
-                    'NetworkInterfaceId' => '<string>',
-                    'PrivateIpAddress' => '<string>',
-                    'PrivateIpAddresses' => [
-                        [
-                            'Primary' => true || false,
-                            'PrivateIpAddress' => '<string>', // REQUIRED
-                        ],
-                        // ...
-                    ],
-                    'SecondaryPrivateIpAddressCount' => <integer>,
-                    'SubnetId' => '<string>',
-                ],
-                // ...
-            ],
-            'Placement' => $placement->toArray(),
-            'SecurityGroupIds' => ['<string>', ...],
-            'SecurityGroups' => ['<string>', ...],
-            'SubnetId' => $subnetId,
-            'UserData' => '<string>',
-        );
-        
-        if ($kernelId !== '')
-        {
-            $params['KernelId'] = $kernelId;
-        }
-        
-        if ($ramDiskId !== '')
-        {
-            $params['RamdiskId'] = $ramDiskId;
-        }
-        
-        if ($privateIpAddress !== '')
-        {
-            $params['PrivateIpAddress'] = $privateIpAddress;
-        }
-        
-        $result = $client->runInstances($params);
+        return $request->send($this->m_client);        
     }
     
     
