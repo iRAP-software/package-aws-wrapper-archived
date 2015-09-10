@@ -35,7 +35,7 @@ class LaunchSpecification
      */
     public function __construct(\iRAP\AwsWrapper\Enums\Ec2InstanceType $instance_type, $image_id)
     {
-        self::validate_image_id($image_id);
+        self::validateImageId($image_id);
         $this->m_instanceType = $instance_type;
         $this->m_image_id = $image_id;
     }
@@ -46,7 +46,7 @@ class LaunchSpecification
      * this allows better IO)
      * @param type $flag
      */
-    public function set_ebs_optimized($flag=true)
+    public function setEbsOptimized($flag=true)
     {
         if ($flag)
         {
@@ -65,9 +65,9 @@ class LaunchSpecification
      * @param string $securityGroup - the ID of the security group we wish to set.
      * @return void
      */
-    public function set_security_group($securityGroup)
+    public function setSecurityGroup($securityGroup)
     {
-        self::validate_security_group($securityGroup);
+        self::validateSecurityGroup($securityGroup);
         $this->m_securityGroup = $securityGroup;
     }
     
@@ -77,7 +77,7 @@ class LaunchSpecification
      * @param String $name - the name of the keypair
      * @return void.
      */
-    public function set_key_pair($name)
+    public function setKeyPair($name)
     {
         $this->m_keyName = $name;
     }
@@ -88,7 +88,7 @@ class LaunchSpecification
      * @param type $kernelId
      * @return void
      */
-    public function set_kernel_id($kernelId)
+    public function setKernelId($kernelId)
     {
         $this->m_kernelId = $kernelId;
     }
@@ -101,7 +101,7 @@ class LaunchSpecification
      * @param String $userData
      * @throws Exception
      */
-    public function set_user_data($userData)
+    public function setUserData($userData)
     {
         if (!is_string($userData))
         {
@@ -119,30 +119,30 @@ class LaunchSpecification
      * @param type $ramDiskId
      * @return void
      */
-    public function set_ram_disk_id($ramDiskId)
+    public function setRamDiskId($ramDiskId)
     {
         $this->m_ramDiskId = $ramDiskId;
     }
     
-    public function add_iam_instance_profile(IamInstanceProfile $profile)
+    public function addIamInstanceProfile(IamInstanceProfile $profile)
     {
         $this->m_iamProfile[] = $profile;
     }
     
     
-    public function add_network_interface(NetworkInterface $networkInterface)
+    public function addNetworkInterface(NetworkInterface $networkInterface)
     {
-        $this->m_networkInterfaceSet[] = $networkInteface;
+        $this->m_networkInterfaceSet[] = $networkInterface;
     }
     
     
-    public function add_block_device(BlockDevice $blockDevice)
+    public function addBlockDevice(BlockDevice $blockDevice)
     {
         $this->m_blockDevices[] = $blockDevice;
     }
     
     
-    public function set_placement(Placement $placement)
+    public function setPlacement(Placement $placement)
     {
         $this->m_placement = $placement;
     }
@@ -152,7 +152,7 @@ class LaunchSpecification
      * Enable monitoring.
      * @param type $flag
      */
-    public function set_monitoring($flag=true)
+    public function setMonitoring($flag=true)
     {
         $this->m_monitoringEnabled = $flag;
     }
@@ -163,7 +163,7 @@ class LaunchSpecification
      * Cloud.
      * @param string $subnetId
      */
-    public function set_subnet_id($subnetId)
+    public function setSubnetId($subnetId)
     {
         $this->m_subnetId = $subnetId;
     }
@@ -174,7 +174,7 @@ class LaunchSpecification
      * @param void
      * @return Array $arrayForm - this object in array form.
      */
-    public function to_array()
+    public function toArray()
     {
         $arrayForm = array(
             'ImageId'       => $this->m_image_id,
@@ -272,12 +272,12 @@ class LaunchSpecification
         return $arrayForm;
     }
 
-    private static function validate_image_id($imageId)
+    private static function validateImageId($imageId)
     {
         print "validateImageId to be implemented." . PHP_EOL;
     }
     
-    private static function validate_security_group($securityGroup)
+    private static function validateSecurityGroup($securityGroup)
     {
         print "security Group validation has yet to be implemented" . PHP_EOL;
     }
