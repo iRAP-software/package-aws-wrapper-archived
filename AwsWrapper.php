@@ -13,9 +13,9 @@ class AwsWrapper
     private $m_secret;
     private $m_region;
     
-    public function __construct($api_key, $secret, Enums\AwsRegion $region)
+    public function __construct($apiKey, $secret, Enums\AwsRegion $region)
     {
-        $this->m_apiKey = $api_key;
+        $this->m_apiKey = $apiKey;
         $this->m_secret = $secret;
         $this->m_region = $region;
     }
