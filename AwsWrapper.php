@@ -33,7 +33,7 @@ class AwsWrapper
     
     /**
      * 
-     * @return S3\S3Client
+     * @return Ec2\Ec2Client
      */
     public function getEc2Client()
     {
