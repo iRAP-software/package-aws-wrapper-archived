@@ -172,11 +172,11 @@ class RequestSpotInstance extends Ec2RequestAbstract
     
     /**
      * Sends the request to the AWS api. This is called from our parent.
-     * @param \AmazonEC2 $ec2 - the ec2 aws client
+     * @param \Aws\Ec2\Ec2Client $ec2 - the ec2 aws client
      * @param array $options - all the parameter/specifications.
      * @return CFResponse $response - response from the AWS API
      */
-    protected function sendRequest(\AmazonEC2 $ec2, array $options) 
+    protected function sendRequest(\Aws\Ec2\Ec2Client $ec2, array $options) 
     {
         $ec2->set_region($this->m_availability_zone); # Ami ids wont be recognized without this for some reason
         $response = $ec2->request_spot_instances($this->m_price, $options);

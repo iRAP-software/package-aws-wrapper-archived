@@ -151,18 +151,13 @@ class RequestRunInstances extends Ec2RequestAbstract
     
     /**
      * Send the request to spawn instances!
-     * @param AmazonEC2 $ec2 - the ec2 client (from sdk) that actaully makes the requst
-     * @param array $opt - the optional array to put into the request generated from this object.
+     * @param \Aws\Ec2\Ec2Client $ec2Client - the ec2 client (from sdk) that actaully makes the requst
+     * @param array $options - the optional array to put into the request generated from this object.
      */
-    protected function sendRequest(\AmazonEC2 $ec2, array $opt) 
-    {
-        $ec2->set_region($this->m_region);
-        
+    protected function sendRequest(\Aws\Ec2\Ec2Client $ec2Client, array $options) 
+    {        
         /* @var $response CFResponse */
-        $response = $ec2->run_instances($this->m_image_id, 
-                                        $this->m_minCount, 
-                                        $this->m_maxCount, 
-                                        $opt);
+        $response = $ec2Client->run_instances($options);
         
         if ($response->isOK())
         {

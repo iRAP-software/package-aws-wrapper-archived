@@ -96,14 +96,12 @@ class RequestDescribeSubnets extends Ec2RequestAbstract
      * @param array $opt
      * @return type
      */
-    protected function sendRequest(\AmazonEC2 $ec2, array $opt) 
+    protected function sendRequest(\Aws\Ec2\Ec2Client $ec2, array $opt) 
     {
-        $ec2->set_region((string)$this->m_region);
         $response = $ec2->describe_subnets($opt);
         print("subnets: " . PHP_EOL . print_r($response, true));
         die('Subnet request object has not been complted.');
         return $response;
     }
-
 }
 

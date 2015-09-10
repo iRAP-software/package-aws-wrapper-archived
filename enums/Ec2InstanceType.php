@@ -11,7 +11,7 @@ namespace iRAP\AwsWrapper\Enums;
 class Ec2InstanceType
 {
     private $m_instanceType;
-
+    
     
     /**
      * Create a micro instance. This is the only instance whereby the amount of compute capability
@@ -42,7 +42,7 @@ class Ec2InstanceType
                 $ec2InstanceType = new Ec2InstanceType('t2.micro');
             }
             break;
-        
+            
             case 2:
             {
                 $ec2InstanceType = new Ec2InstanceType('t2.small');
@@ -70,7 +70,7 @@ class Ec2InstanceType
      * @throws Exception if size is not within range.
      */
     public static function create_general_purpose_new($size)
-    {        
+    {
         switch ($size)
         {        
             case 1:
@@ -84,7 +84,7 @@ class Ec2InstanceType
                 $ec2InstanceType = new Ec2InstanceType('m3.2xlarge');
             }
             break;
-        
+            
             default:
             {
                 $err_msg = 'createGeneralPurpose - Unrecognized size: ' . $size . '. Please ' .
@@ -96,7 +96,6 @@ class Ec2InstanceType
         
         return $ec2InstanceType;
     }
-    
     
     
     /**
@@ -111,28 +110,28 @@ class Ec2InstanceType
     public static function create_general_purpose_old($size)
     {
         switch ($size)
-        {        
+        {
             case 1:
             {
-                $ec2InstanceType = new Ec2InstanceType(\AmazonEC2::INSTANCE_SMALL);
+                $ec2InstanceType = new Ec2InstanceType('m1.small');
             }
             break;
         
             case 2:
             {
-                $ec2InstanceType = new Ec2InstanceType(\AmazonEC2::INSTANCE_MEDIUM);
+                $ec2InstanceType = new Ec2InstanceType('m1.medium');
             }
             break;
         
             case 3:
             {
-                $ec2InstanceType = new Ec2InstanceType(\AmazonEC2::INSTANCE_LARGE);
+                $ec2InstanceType = new Ec2InstanceType('m1.large');
             }
             break;
         
             case 4:
             {
-                $ec2InstanceType = new Ec2InstanceType(\AmazonEC2::INSTANCE_XLARGE);
+                $ec2InstanceType = new Ec2InstanceType('m1.xlarge');
             }
             break;
         
@@ -169,25 +168,25 @@ class Ec2InstanceType
                 $ec2InstanceType = new Ec2InstanceType('m2.xlarge');
             }
             break;
-        
+            
             case 2:
             {
                 $ec2InstanceType = new Ec2InstanceType('m2.2xlarge');
             }
             break;
-        
+            
             case 3:
             {
                 $ec2InstanceType = new Ec2InstanceType('m2.4xlarge');
             }
             break;
-        
+            
             case 4:
             {
                 $ec2InstanceType = new Ec2InstanceType('cr1.8xlarge');
             }
             break;
-        
+            
             default:
             {
                 $err_msg = 'createHighMemory - Unrecognized size: ' . $size . '. Please ' .
@@ -198,8 +197,6 @@ class Ec2InstanceType
         }
     }
     
-    
-
     
     /**
      * Create one of the new Compute optimized instances. (e.g. c3 family)
@@ -216,34 +213,33 @@ class Ec2InstanceType
             case 1:
             {
                 $ec2InstanceType = new Ec2InstanceType('c4.large');
-        
             }
             break;
-        
+            
             case 2:
             {
                 $ec2InstanceType = new Ec2InstanceType('c4.xlarge');
             }
             break;
-        
+            
             case 3:
             {
                 $ec2InstanceType = new Ec2InstanceType('c4.2xlarge');
             }
             break;
-        
+            
             case 4:
             {
                 $ec2InstanceType = new Ec2InstanceType('c4.4xlarge');
             }
             break;
-        
+            
             case 5:
             {
                 $ec2InstanceType = new Ec2InstanceType('c4.8xlarge');
             }
             break;
-        
+            
             default:
             {
                 $err_msg = 'Unrecognized size: ' . $size . '. Please provide a value between ' .
@@ -270,34 +266,33 @@ class Ec2InstanceType
             case 1:
             {
                 $ec2InstanceType = new Ec2InstanceType('c3.large');
-        
             }
             break;
-        
+            
             case 2:
             {
                 $ec2InstanceType = new Ec2InstanceType('c3.xlarge');
             }
             break;
-        
+            
             case 3:
             {
                 $ec2InstanceType = new Ec2InstanceType('c3.2xlarge');
             }
             break;
-        
+            
             case 4:
             {
                 $ec2InstanceType = new Ec2InstanceType('c3.4xlarge');
             }
             break;
-        
+            
             case 5:
             {
                 $ec2InstanceType = new Ec2InstanceType('c3.8xlarge');
             }
             break;
-        
+            
             default:
             {
                 $err_msg = 'Unrecognized size: ' . $size . '. Please provide a value between ' .
@@ -322,28 +317,27 @@ class Ec2InstanceType
             case 1:
             {
                 $ec2InstanceType = new Ec2InstanceType('i2.xlarge');
-        
             }
             break;
-        
+            
             case 2:
             {
                 $ec2InstanceType = new Ec2InstanceType('i2.2xlarge');
             }
             break;
-        
+            
             case 3:
             {
                 $ec2InstanceType = new Ec2InstanceType('i2.4xlarge');
             }
             break;
-        
+            
             case 4:
             {
                 $ec2InstanceType = new Ec2InstanceType('i2.8xlarge');
             }
             break;
-       
+        
             default:
             {
                 $err_msg = 'Unrecognized size: ' . $size . '. Please provide a value between ' .
@@ -436,7 +430,7 @@ class Ec2InstanceType
     
     
     private function __construct($instanceType)
-    {        
+    {
         $this->m_instanceType = $instanceType;
     }
     
@@ -451,4 +445,3 @@ class Ec2InstanceType
         return $this->m_instanceType;
     }
 }
-

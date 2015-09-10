@@ -33,9 +33,9 @@ class RequestCancelSpotInstance extends Ec2RequestAbstract
     {
         return array();
     }
-
     
-    protected function sendRequest(\AmazonEC2 $ec2, array $opt)
+    
+    protected function sendRequest(\Aws\Ec2\Ec2Client $ec2, array $opt)
     {
         $ec2->set_region((string)$this->m_region);
         $response = $ec2->cancel_spot_instance_requests($this->m_request_id, $opt);

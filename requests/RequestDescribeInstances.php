@@ -42,6 +42,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
         }
     }
     
+    
     protected function getOptionsArray() 
     {
         $options = array();
@@ -55,10 +56,9 @@ class RequestDescribeInstances extends Ec2RequestAbstract
         {
             $options['InstanceId'] = array_keys($this->m_instance_ids);
         }
-                
+        
         return $options;
     }
-
     
     
     /**
@@ -68,7 +68,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
      * @param array $opt - the optional parameters to be sent.
      * @return CFResponse $response
      */
-    protected function sendRequest(\AmazonEC2 $ec2, array $opt) 
+    protected function sendRequest(\Aws\Ec2\Ec2Client $ec2, array $opt) 
     {
         $ec2->set_region((String)$this->m_region);
         $response = $ec2->describe_instances($opt);
@@ -112,7 +112,6 @@ class RequestDescribeInstances extends Ec2RequestAbstract
     }
     
     
-    
     /**
      * Returns the instances that were fetched with this request. Note that this will always be
      * empty until send has been called at least once. Note that multiple calls to send will 
@@ -128,6 +127,5 @@ class RequestDescribeInstances extends Ec2RequestAbstract
      * @return Array<String> - list of instance ids being described.
      */
     public function get_instance_ids() { return $this->m_returned_instance_ids; }
-
 }
 

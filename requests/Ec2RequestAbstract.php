@@ -30,7 +30,7 @@ abstract class Ec2RequestAbstract
      * This is the call that actually runs the request. It can should only be called from this 
      * abstract object in the send function as this needs to add its own properties.
      */
-    protected abstract function sendRequest(\AmazonEC2 $ec2, Array $opt);
+    protected abstract function sendRequest(\Aws\Ec2\Ec2Client $ec2, Array $options);
 
 
     /**
@@ -53,9 +53,9 @@ abstract class Ec2RequestAbstract
      * request. 
      * @return CFResponse
      */
-    public final function send(\AmazonEC2 $ec2)
+    public final function send(\Aws\Ec2\Ec2Client $ec2Client)
     {        
-        $opts = static::get_options_array();
+        $opts = static::getOptionsArray();
         
         if (count($this->m_curl_opts) > 0)
         {
@@ -69,10 +69,9 @@ abstract class Ec2RequestAbstract
             $opts['returnCurlHandle'] = $this->returnCurlHandle;
         }
         
-        
         // Get the response from a call to the DescribeImages operation.
         
-        $response = static::send_request($ec2, $opts);
+        $response = static::sendRequest($ec2Client, $opts);
         
         $debugMsg = "response for " . get_called_class() . ' request: ' . PHP_EOL .
                     print_r($response, true);

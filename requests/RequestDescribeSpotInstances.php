@@ -92,9 +92,8 @@ class RequestDescribeSpotInstances extends Ec2RequestAbstract
      * @param array $opt - the options parameter for the request.
      * @return CFResponse
      */
-    protected function sendRequest(\AmazonEC2 $ec2, array $opt) 
+    protected function sendRequest(\Aws\Ec2\Ec2Client $ec2, array $opt) 
     {
-        $ec2->set_region((string) $this->m_region);
         $response = $ec2->describe_spot_instance_requests($opt);
         
         if ($response->isOK())
@@ -119,5 +118,4 @@ class RequestDescribeSpotInstances extends Ec2RequestAbstract
     
     public function get_instance_ids() { return $this->m_spot_instance_ids; }
     public function get_spot_instances() { return $this->m_spot_instances; }
-
 }
