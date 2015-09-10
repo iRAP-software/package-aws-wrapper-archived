@@ -157,7 +157,7 @@ class RequestRunInstances extends Ec2RequestAbstract
     protected function sendRequest(\Aws\Ec2\Ec2Client $ec2Client, array $options) 
     {        
         /* @var $response CFResponse */
-        $response = $ec2Client->run_instances($options);
+        $response = $ec2Client->runInstances($options);
         
         if ($response->isOK())
         {
@@ -165,7 +165,7 @@ class RequestRunInstances extends Ec2RequestAbstract
             
             foreach ($ec2InstanceStdObjs as $ec2StdObj)
             {
-                $this->m_generatedInstances[] = \iRAP\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($ec2StdObj);
+                $this->m_generatedInstances[] = \iRAP\AwsWrapper\Ec2\Ec2Instance::createFromAwsItem($ec2StdObj);
             }
         }
         

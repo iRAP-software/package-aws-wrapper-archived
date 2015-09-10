@@ -81,7 +81,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
                 {
                     $ec2Instance = \iRAP\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($instanceSetItem);
                     $this->m_instances[] = $ec2Instance;
-                    $this->m_returned_instance_ids[] = $ec2Instance->get_instance_id();     
+                    $this->m_returned_instance_ids[] = $ec2Instance->getInstanceId();     
                 }
             }
         }
