@@ -131,14 +131,13 @@ class RequestRunInstances extends Ec2RequestAbstract
      * @param array $options - the optional array to put into the request generated from this object.
      */
     protected function sendRequest(\Aws\Ec2\Ec2Client $ec2Client, array $options) 
-    {        
+    {
         /* @var $response CFResponse */
         var_dump($options);
         $response = $ec2Client->runInstances($options);
         
-
         $ec2InstanceStdObjs = $response->body->instancesSet->item;
-
+        
         foreach ($ec2InstanceStdObjs as $ec2StdObj)
         {
             $this->m_generatedInstances[] = \iRAP\AwsWrapper\Ec2\Ec2Instance::createFromAwsItem($ec2StdObj);
@@ -148,6 +147,10 @@ class RequestRunInstances extends Ec2RequestAbstract
     }
     
     
+    /**
+     * Specify whether this is just a dry run or not. By default it is NOT.
+     * @param bool $dryRun - optionally set to false.
+     */
     public function setDryRun($dryRun = true)
     {
         $this->m_dryRun = $dryRun;
