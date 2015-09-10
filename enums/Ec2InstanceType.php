@@ -43,7 +43,7 @@ class Ec2InstanceType
         );
         
         $ec2InstanceType = $sizeMap[$size];
-        return $ec2InstanceType;
+        return new Ec2InstanceType($ec2InstanceType);
     }
     
     
