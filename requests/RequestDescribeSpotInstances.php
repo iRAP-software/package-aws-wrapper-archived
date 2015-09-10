@@ -17,7 +17,7 @@ class RequestDescribeSpotInstances extends Ec2RequestAbstract
     
     
     private $m_spot_instance_ids = array(); # ec2 instance ids that the requests spawned.
-
+    
     
     /**
      * 
@@ -79,7 +79,7 @@ class RequestDescribeSpotInstances extends Ec2RequestAbstract
         
         if ($this->m_filter != null)
         {
-            $options['Filter'] = $this->m_filter->to_array();
+            $options['Filter'] = $this->m_filter->toArray();
         }
         
         return $options;

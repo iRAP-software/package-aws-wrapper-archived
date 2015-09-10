@@ -48,7 +48,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
         
         if ($this->m_filter != null)
         {
-            $options['Filter'] = $this->m_filter->to_array();
+            $options['Filter'] = $this->m_filter->toArray();
         }
         
         if (count($this->m_instance_ids) > 0)

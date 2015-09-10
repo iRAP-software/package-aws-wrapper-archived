@@ -75,7 +75,7 @@ class NetworkInterface
         foreach ($this->m_private_ip_address as $ip)
         {
             /* $ip PrivateIp */
-            $privateIps[] = $ip->to_array();
+            $privateIps[] = $ip->toArray();
         }
         
         $array_form = array(

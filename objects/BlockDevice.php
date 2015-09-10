@@ -17,8 +17,8 @@ namespace iRAP\AwsWrapper\Objects;
 class BlockDevice
 {
     private $m_virtualName; # e.g. "MySpecialBlock"
-    private $m_device_name; # pecifies the device name (e.g., /dev/sdh).
-    private $m_ebs_devices = array();
+    private $m_deviceName; # pecifies the device name (e.g., /dev/sdh).
+    private $m_ebsDevices = array();
     private $m_no_device; # Specifies the device name to suppress during instance launch. confusing.
     
     
@@ -30,7 +30,7 @@ class BlockDevice
     public function __construct($virtual_name, $device_name)
     {
         $this->m_virtualName = $virtual_name;
-        $this->m_device_name = $device_name;
+        $this->m_deviceName = $device_name;
     }
     
     
@@ -38,9 +38,9 @@ class BlockDevice
      * Add an ebs volume to the block device
      * @param Ebs $ebs - the EBS device thatyou wish to add to this device.
      */
-    public function add_ebs(Ebs $ebs)
+    public function addEbs(Ebs $ebs)
     {
-        $this->m_ebs_devices[] = $ebs;
+        $this->m_ebsDevices[] = $ebs;
     }
     
     
@@ -48,11 +48,11 @@ class BlockDevice
      * Converts this object into an array form that can be placed into a request.
      * @return Array - this object in array form.
      */
-    public function to_array()
+    public function toArray()
     {
         $ebs = array();
         
-        foreach($ebsDevices as $ebsDevice)
+        foreach ($this->m_ebsDevices as $ebsDevice)
         {
             /* @var $ebsDevice Ebs */
             $ebs[] = $ebsDevice->to_array();
@@ -60,22 +60,9 @@ class BlockDevice
         
         return array(
             'VirtualName'   => $this->m_virtualName,
-            'DeviceName'    => $this->m_device_name,
+            'DeviceName'    => $this->m_deviceName,
             'Ebs'           => $ebs,
             'NoDevice'      => $this->m_no_device
         );
     }
-    
-    
-    /*
-    Ebs - array - Optional - Specifies parameters used to automatically setup Amazon EBS volumes when the instance is launched.
-
-        x - array - Optional - This represents a simple array index.
-            SnapshotId - string - Optional - The ID of the snapshot from which the volume will be created.
-            VolumeSize - integer - Optional - The size of the volume, in gigabytes.
-            DeleteOnTermination - boolean - Optional - Specifies whether the Amazon EBS volume is deleted on instance termination.
-            VolumeType - string - Optional - [Allowed values: standard, io1]
-            Iops - integer - Optional - 
-     * 
-     */
 }

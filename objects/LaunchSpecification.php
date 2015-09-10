@@ -200,7 +200,7 @@ class LaunchSpecification
         if (isset($this->m_placement))
         {
             /* @var $this->m_placement Placement */
-            $arrayForm['Placement'] = $this->m_placement->to_array();
+            $arrayForm['Placement'] = $this->m_placement->toArray();
         }
         
         if (isset($this->m_kernel_id))
@@ -220,7 +220,7 @@ class LaunchSpecification
             foreach ($this->m_block_devices as $blockDevice)
             {
                 /* @var $blockDevice BlockDevice */
-                $expandedBlockDevices[] = $blockDevice->to_array();
+                $expandedBlockDevices[] = $blockDevice->toArray();
             }
             
             $arrayForm['BlockDeviceMapping'] = $expandedBlockDevices;
