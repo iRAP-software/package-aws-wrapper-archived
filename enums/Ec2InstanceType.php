@@ -19,7 +19,7 @@ class Ec2InstanceType
      * @param void
      * @return Ec2InstanceType
      */
-    public static function create_t1()
+    public static function createT1()
     {
         $ec2InstanceType = new Ec2InstanceType('t1.micro');
         return $ec2InstanceType;
@@ -28,34 +28,21 @@ class Ec2InstanceType
     
     /**
      * Create a t2 (burstable) intance
-     * @param int $size
+     * @param int $size - int between 1 and 4 with 1 being the smallest size for t2.micro.
      * @return Ec2InstanceType
      */
-    public static function create_t2($size)
+    public static function createT2($size)
     {
-        $size = \iRAP\CoreLibs\Core::clampValue($size, 3, 1);
+        $size = \iRAP\CoreLibs\Core::clampValue($size, 4, 1);
         
-        switch ($size)
-        {
-            case 1:
-            {
-                $ec2InstanceType = new Ec2InstanceType('t2.micro');
-            }
-            break;
-            
-            case 2:
-            {
-                $ec2InstanceType = new Ec2InstanceType('t2.small');
-            }
-            break;
+        $sizeMap = array(
+            1 => 't2.micro',
+            2 => 't2.small',
+            3 => 't2.medium',
+            4 => 't2.large'
+        );
         
-            case 3:
-            {
-                $ec2InstanceType = new Ec2InstanceType('t2.medium');
-            }
-            break;
-        }
-        
+        $ec2InstanceType = $sizeMap[$size];
         return $ec2InstanceType;
     }
     
@@ -69,7 +56,7 @@ class Ec2InstanceType
      * @return Ec2InstanceType
      * @throws Exception if size is not within range.
      */
-    public static function create_general_purpose_new($size)
+    public static function createGeneralPurposeNew($size)
     {
         switch ($size)
         {        
@@ -107,7 +94,7 @@ class Ec2InstanceType
      *                    4 - m1 xlarge
      * @throws Exception if size is not an integer between 1 and 4.
      */
-    public static function create_general_purpose_old($size)
+    public static function createGeneralPurposeOld($size)
     {
         switch ($size)
         {
@@ -159,7 +146,7 @@ class Ec2InstanceType
      * 
      * @throws Exception if size was not a valid number.
      */
-    public static function create_high_memory($size)
+    public static function createHighMemory($size)
     {
         switch ($size)
         {        
@@ -206,7 +193,7 @@ class Ec2InstanceType
      * @return \Ec2InstanceType
      * @throws Exception if $size provided was not an allowed value.
      */
-    public static function create_new_high_cpu($size)
+    public static function createNewHighCpu($size)
     {
         switch ($size)
         {
@@ -259,7 +246,7 @@ class Ec2InstanceType
      * @return Ec2InstanceType
      * @throws Exception if $size is not an acceptable number
      */
-    public static function create_old_high_cpu($size)
+    public static function createOldHighCpu($size)
     {
         switch ($size)
         {
@@ -310,7 +297,7 @@ class Ec2InstanceType
      * Create a high IO storage optimized instance (SSD local storage)
      * @param int $size - int between 1 and 4
      */
-    public static function create_high_io($size)
+    public static function createHighIo($size)
     {
         switch ($size)
         {
@@ -355,7 +342,7 @@ class Ec2InstanceType
      * Create the storage instance which just has a huge amount of local storage. 24 x 2048Gig
      * drives.
      */
-    public static function create_storage()
+    public static function createStorage()
     {
         $ec2InstanceType = new Ec2InstanceType('hs1.8xlarge');
         return $ec2InstanceType;
@@ -378,6 +365,7 @@ class Ec2InstanceType
             't2.micro',
             't2.small',
             't2.medium',
+            't2.large',
             
             'm1.small',
             'm1.medium',
