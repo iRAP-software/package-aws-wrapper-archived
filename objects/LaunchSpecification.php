@@ -11,19 +11,19 @@ namespace iRAP\AwsWrapper\Objects;
 class LaunchSpecification
 {
     private $m_image_id;
-    private $m_key_name; # The name of the key pair for SSH authentication when deployed.
-    private $m_instance_type;
-    private $m_security_group;
-    private $m_ebs_optimized = false;
-    private $m_group_set = null;
-    private $m_network_interface_set = array();
-    private $m_block_devices = array();
-    private $m_ram_disk_id = null;
-    private $m_kernel_id = null;
+    private $m_keyName; # The name of the key pair for SSH authentication when deployed.
+    private $m_instanceType;
+    private $m_securityGroup;
+    private $m_ebsOptimized = false;
+    private $m_groupSet = null;
+    private $m_networkInterfaceSet = array();
+    private $m_blockDevices = array();
+    private $m_ramDiskId = null;
+    private $m_kernelId = null;
     private $m_placement = null;
-    private $m_user_data = null; # optional string of user data
-    private $m_monitoring_enabled = false;
-    private $m_iam_profiles = array(); # optional array of IamInstanceProfile objects
+    private $m_userData = null; # optional string of user data
+    private $m_monitoringEnabled = false;
+    private $m_iamProfile = array(); # optional array of IamInstanceProfile objects
     
     
     /**
@@ -36,7 +36,7 @@ class LaunchSpecification
     public function __construct(\iRAP\AwsWrapper\Enums\Ec2InstanceType $instance_type, $image_id)
     {
         self::validate_image_id($image_id);
-        $this->m_instance_type = $instance_type;
+        $this->m_instanceType = $instance_type;
         $this->m_image_id = $image_id;
     }
     
@@ -50,11 +50,11 @@ class LaunchSpecification
     {
         if ($flag)
         {
-            $this->m_ebs_optimized = true;
+            $this->m_ebsOptimized = true;
         }
         else
         {
-            $this->m_ebs_optimized = false;
+            $this->m_ebsOptimized = false;
         }
     }
     
@@ -68,7 +68,7 @@ class LaunchSpecification
     public function set_security_group($securityGroup)
     {
         self::validate_security_group($securityGroup);
-        $this->m_security_group = $securityGroup;
+        $this->m_securityGroup = $securityGroup;
     }
     
     
@@ -79,7 +79,7 @@ class LaunchSpecification
      */
     public function set_key_pair($name)
     {
-        $this->m_key_name = $name;
+        $this->m_keyName = $name;
     }
     
     
@@ -90,7 +90,7 @@ class LaunchSpecification
      */
     public function set_kernel_id($kernelId)
     {
-        $this->m_kernel_id = $kernelId;
+        $this->m_kernelId = $kernelId;
     }
     
     
@@ -108,7 +108,7 @@ class LaunchSpecification
             throw new \Exception('User data must be a string.');
         }
         
-        $this->m_user_data = $userData;
+        $this->m_userData = $userData;
     }
     
     
@@ -121,24 +121,24 @@ class LaunchSpecification
      */
     public function set_ram_disk_id($ramDiskId)
     {
-        $this->m_ram_disk_id = $ramDiskId;
+        $this->m_ramDiskId = $ramDiskId;
     }
     
     public function add_iam_instance_profile(IamInstanceProfile $profile)
     {
-        $this->m_iam_profiles[] = $profile;
+        $this->m_iamProfile[] = $profile;
     }
     
     
     public function add_network_interface(NetworkInterface $networkInterface)
     {
-        $this->m_network_interface_set[] = $networkInteface;
+        $this->m_networkInterfaceSet[] = $networkInteface;
     }
     
     
     public function add_block_device(BlockDevice $blockDevice)
     {
-        $this->m_block_devices[] = $blockDevice;
+        $this->m_blockDevices[] = $blockDevice;
     }
     
     
@@ -154,7 +154,7 @@ class LaunchSpecification
      */
     public function set_monitoring($flag=true)
     {
-        $this->m_monitoring_enabled = $flag;
+        $this->m_monitoringEnabled = $flag;
     }
     
     
@@ -178,23 +178,23 @@ class LaunchSpecification
     {
         $arrayForm = array(
             'ImageId'       => $this->m_image_id,
-            'InstanceType'  => (String)$this->m_instance_type,
+            'InstanceType'  => (String)$this->m_instanceType,
             'ImageId'       => $this->m_image_id
         );
         
-        if (isset($this->m_key_name))
+        if (isset($this->m_keyName))
         {
-            $arrayForm['KeyName'] = $this->m_key_name;
+            $arrayForm['KeyName'] = $this->m_keyName;
         }
         
-        if (isset($this->m_security_group))
+        if (isset($this->m_securityGroup))
         {
-            $arrayForm['SecurityGroup'] = $this->m_security_group;
+            $arrayForm['SecurityGroup'] = $this->m_securityGroup;
         }
         
-        if (isset($this->m_user_data))
+        if (isset($this->m_userData))
         {
-            $arrayForm['UserData'] = $this->m_user_data;
+            $arrayForm['UserData'] = $this->m_userData;
         }
         
         if (isset($this->m_placement))
@@ -203,21 +203,21 @@ class LaunchSpecification
             $arrayForm['Placement'] = $this->m_placement->toArray();
         }
         
-        if (isset($this->m_kernel_id))
+        if (isset($this->m_kernelId))
         {
-            $arrayForm['KernelId'] = $this->m_kernel_id;
+            $arrayForm['KernelId'] = $this->m_kernelId;
         }
         
-        if (isset($this->m_ram_disk_id))
+        if (isset($this->m_ramDiskId))
         {
-            $arrayForm['RamdiskId'] = $this->m_ram_disk_id;
+            $arrayForm['RamdiskId'] = $this->m_ramDiskId;
         }
         
-        if (count($this->m_block_devices) > 0)
+        if (count($this->m_blockDevices) > 0)
         {
             $expandedBlockDevices = array();
             
-            foreach ($this->m_block_devices as $blockDevice)
+            foreach ($this->m_blockDevices as $blockDevice)
             {
                 /* @var $blockDevice BlockDevice */
                 $expandedBlockDevices[] = $blockDevice->toArray();
@@ -227,9 +227,9 @@ class LaunchSpecification
         }
         
         
-        if ($this->m_monitoring_enabled)
+        if ($this->m_monitoringEnabled)
         {
-            $arrayForm['Monitoring.Enabled'] = $this->m_monitoring_enabled;
+            $arrayForm['Monitoring.Enabled'] = $this->m_monitoringEnabled;
         }
         
         
@@ -238,11 +238,11 @@ class LaunchSpecification
             $arrayForm['SubnetId'] = $this->m_subnetId;
         }
         
-        if (count($this->m_network_interface_set) > 0)
+        if (count($this->m_networkInterfaceSet) > 0)
         {
             $networkInterfaces = array();
             
-            foreach ($this->m_network_interface_set as $network_interface)
+            foreach ($this->m_networkInterfaceSet as $network_interface)
             {
                 /* @var $network_interface NetworkInterface */
                 $networkInterfaces[] = $network_interface->to_array();
@@ -251,11 +251,11 @@ class LaunchSpecification
             $arrayForm['NetworkInterfaceSet'] = $networkInterfaces;
         }
         
-        if (count($this->m_iam_profiles) > 0)
+        if (count($this->m_iamProfile) > 0)
         {
             $iamProfiles = array();
             
-            foreach ($this->m_iam_profiles as $profile)
+            foreach ($this->m_iamProfile as $profile)
             {
                 /* @var $profile IamInstanceProfile */
                 $iamProfiles[] = $profile->toArray();
@@ -264,9 +264,9 @@ class LaunchSpecification
             $arrayForm['IamInstanceProfile'] = $iamProfiles;
         }
         
-        if (isset($this->m_ebs_optimized) && $this->m_ebs_optimized == true)
+        if (isset($this->m_ebsOptimized) && $this->m_ebsOptimized == true)
         {
-            $arrayForm['EbsOptimized'] = $this->m_ebs_optimized;
+            $arrayForm['EbsOptimized'] = $this->m_ebsOptimized;
         }
         
         return $arrayForm;
