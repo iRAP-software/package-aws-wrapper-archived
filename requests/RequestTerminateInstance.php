@@ -17,7 +17,7 @@ class RequestTerminateInstance extends Ec2RequestAbstract
      * @param AmazonRegion $region - the region the instances are located in.
      * @param mixed $instance_ids - a single instance id or an array of instance ids
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $region, $instance_ids)
+    public function __construct(\iRAP\AwsWrapper\Enums\AwsRegion $region, $instance_ids)
     {
         $this->m_region = $region;
         

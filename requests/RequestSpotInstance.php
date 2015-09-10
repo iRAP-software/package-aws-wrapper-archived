@@ -20,7 +20,7 @@ class RequestSpotInstance extends Ec2RequestAbstract
     private $m_valid_from = null; # This does not have to ever be set e.g. optional
     private $m_valid_until = null; # This does not have to ever be set e.g. optional
     private $m_launch_group = null; # This does not have to ever be set e.g. optional
-    private $m_generated_spot_request_ids = array();
+    private $m_generatedSpotRequestIds = array();
     
     
     /**
@@ -35,7 +35,7 @@ class RequestSpotInstance extends Ec2RequestAbstract
      *                                                   refer to that object for details.
      * @param int $num_instances - the number of spot instances you wish to launch.
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $availability_zone, 
+    public function __construct(\iRAP\AwsWrapper\Enums\AwsRegion $availability_zone, 
                                 \iRAP\AwsWrapper\Enums\SpotInstanceType $spot_instance_type, 
                                 $price,
                                 \iRAP\AwsWrapper\Objects\LaunchSpecification $launch_specification,
@@ -181,16 +181,13 @@ class RequestSpotInstance extends Ec2RequestAbstract
         $ec2->set_region($this->m_availability_zone); # Ami ids wont be recognized without this for some reason
         $response = $ec2->request_spot_instances($this->m_price, $options);
         
-        if ($response->isOK())
+        foreach ($response->body->item() AS $item)
         {
-            foreach ($response->body->item() AS $item)
-            {
-                $this->m_generated_spot_request_ids[] = $item->spotInstanceRequestId;
-            }
+            $this->m_generatedSpotRequestIds[] = $item->spotInstanceRequestId;
         }
         
         # For some reason you usually end up with an empty element from previous operation.
-        $this->m_generated_spot_request_ids = array_filter($this->m_generated_spot_request_ids);
+        $this->m_generatedSpotRequestIds = array_filter($this->m_generatedSpotRequestIds);
         
         return $response;
     }
@@ -205,7 +202,7 @@ class RequestSpotInstance extends Ec2RequestAbstract
      */
     public function get_generated_request_ids()
     {
-        return $this->m_generated_spot_request_ids;
+        return $this->m_generatedSpotRequestIds;
     }
 
 }

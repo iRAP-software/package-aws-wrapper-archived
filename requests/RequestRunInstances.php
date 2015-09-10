@@ -10,11 +10,9 @@ namespace iRAP\AwsWrapper\Requests;
 
 class RequestRunInstances extends Ec2RequestAbstract
 {
-    private $m_region; # the region the request is sent to.
-    private $m_image_id;
     private $m_maxCount;
     private $m_minCount;
-    private $m_disableApiTermination = null;
+    private $m_disableApiTermination = false;
     private $m_launchSpecification;
     private $m_clientToken = null;
     private $m_dryRun = false;
@@ -36,8 +34,7 @@ class RequestRunInstances extends Ec2RequestAbstract
      * @param LaunchSpecification $launchSpecification - the launch specification of the request
      *                                                   refer to that object for details.
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $region,
-                                \iRAP\AwsWrapper\Objects\LaunchSpecification $launchSpecification,
+    public function __construct(\iRAP\AwsWrapper\Objects\LaunchSpecification $launchSpecification,
                                 $maxCount, 
                                 $minCount)
     {
@@ -49,8 +46,6 @@ class RequestRunInstances extends Ec2RequestAbstract
             throw new \Exception('minCount for RunInstancesRequest must be greater than 0');
         }
         
-        $this->m_region   = $region;
-        $this->m_image_id = $launchSpecification->getImageId();
         $this->m_maxCount = $maxCount;
         $this->m_minCount = $minCount;
         $this->m_launchSpecification = $launchSpecification;
@@ -109,41 +104,22 @@ class RequestRunInstances extends Ec2RequestAbstract
      */
     public function getOptionsArray()
     {
-        $options = $this->m_launchSpecification->toArray();
+        $options = array(
+            'InstanceInitiatedShutdownBehavior' => $this->m_instanceInitiatedShutdownBehavior,
+            'DisableApiTermination'             => $this->m_disableApiTermination,
+            'DryRun'                            => $this->m_dryRun,
+            'MaxCount'                          => $this->m_maxCount,
+            'MinCount'                          => $this->m_minCount,
+            'InstanceInitiatedShutdownBehavior' => $this->m_instanceInitiatedShutdownBehavior
+        );
         
-        # ImageId was moved to the run_instances method rather than the options, so we unset it 
-        # here.
-        unset($options['ImageId']);
-        
-        if (isset($options['GroupSet']))
-        {
-            unset($options['GroupSet']);
-        }
-        
-        # S.P - Dont ask me why the run_instances request has a different key name for the exact  
-        # same set of configuration vars.
-        if (isset($options['NetworkInterface']))
-        {
-            $options['NetworkInterface'] = $options['NetworkInterfaceSet'];
-            unset($options['NetworkInterfaceSet']);
-        }
-        
-        if (isset($this->m_disableApiTermination))
-        {
-            $options['DisableApiTermination'] = $this->m_disableApiTermination;
-        }
-        
-        $options['InstanceInitiatedShutdownBehavior'] = $this->m_instanceInitiatedShutdownBehavior;
+        $options = array_merge($options, $this->m_launchSpecification->toArray());
         
         if (isset($this->m_clientToken))
         {
             $options['ClientToken'] = $this->m_clientToken;
         }
         
-        if ($this->m_dryRun === true)
-        {
-            $options['DryRun'] = $this->m_dryRun;
-        }
         
         return $options;
     }
@@ -157,16 +133,15 @@ class RequestRunInstances extends Ec2RequestAbstract
     protected function sendRequest(\Aws\Ec2\Ec2Client $ec2Client, array $options) 
     {        
         /* @var $response CFResponse */
+        var_dump($options);
         $response = $ec2Client->runInstances($options);
         
-        if ($response->isOK())
+
+        $ec2InstanceStdObjs = $response->body->instancesSet->item;
+
+        foreach ($ec2InstanceStdObjs as $ec2StdObj)
         {
-            $ec2InstanceStdObjs = $response->body->instancesSet->item;
-            
-            foreach ($ec2InstanceStdObjs as $ec2StdObj)
-            {
-                $this->m_generatedInstances[] = \iRAP\AwsWrapper\Ec2\Ec2Instance::createFromAwsItem($ec2StdObj);
-            }
+            $this->m_generatedInstances[] = \iRAP\AwsWrapper\Ec2\Ec2Instance::createFromAwsItem($ec2StdObj);
         }
         
         return $response;

@@ -24,7 +24,7 @@ class RequestDescribeSubnets extends Ec2RequestAbstract
      *                           of subnet ID strings.
      * @return void
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $region, $subnetIds = null)
+    public function __construct(\iRAP\AwsWrapper\Enums\AwsRegion $region, $subnetIds = null)
     {
         $this->m_region = $region;
         

@@ -12,8 +12,11 @@ function main()
     $awsWrapper = new iRAP\AwsWrapper\AwsWrapper($apiKey, $secret, $region);
     $ec2Client = $awsWrapper->getEc2Client();
     
-    $ec2Client->runInstances($request);
-    
+    $ubuntuImage = 'ami-47a23a30';
+    $launchSpecification = new \iRAP\AwsWrapper\Objects\LaunchSpecification(\iRAP\AwsWrapper\Enums\Ec2InstanceType::createT2(1), $ubuntuImage);
+    $request = new iRAP\AwsWrapper\Requests\RequestRunInstances($launchSpecification, 1, 1);
+    $response = $ec2Client->runInstances($request);
+    var_dump($response);
 }
 
 main();

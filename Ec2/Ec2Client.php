@@ -12,7 +12,7 @@ class Ec2Client
 {
     private $m_client;
     
-    public function __construct($apiKey, $apiSecret, \iRAP\AwsWrapper\Enums\Ec2Region $region)
+    public function __construct($apiKey, $apiSecret, \iRAP\AwsWrapper\Enums\AwsRegion $region)
     {
         $credentials = array(
             'key'    => $apiKey,
@@ -21,7 +21,7 @@ class Ec2Client
         
         $params = array(
             'credentials' => $credentials,
-            'version'     => '2006-03-01',
+            'version'     => '2015-04-15',
             'region'      => (string) $region,
         );
         

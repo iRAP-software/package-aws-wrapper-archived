@@ -25,7 +25,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
      *                             representing a single one.
      * @return RequestDescribeInstances
      */
-    public function __construct(\iRAP\AwsWrapper\Enums\Ec2Region $region, $instance_ids=array())
+    public function __construct(\iRAP\AwsWrapper\Enums\AwsRegion $region, $instance_ids=array())
     {
         $this->m_region = $region;
         
@@ -73,16 +73,14 @@ class RequestDescribeInstances extends Ec2RequestAbstract
         $ec2->set_region((String)$this->m_region);
         $response = $ec2->describe_instances($opt);
         
-        if ($response->isOK())
-        {            
-            foreach($response->body->reservationSet->item as $item)
+
+        foreach ($response->body->reservationSet->item as $item)
+        {
+            foreach ($item->instancesSet->item as $instanceSetItem)
             {
-                foreach ($item->instancesSet->item as $instanceSetItem)
-                {
-                    $ec2Instance = \iRAP\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($instanceSetItem);
-                    $this->m_instances[] = $ec2Instance;
-                    $this->m_returned_instance_ids[] = $ec2Instance->getInstanceId();     
-                }
+                $ec2Instance = \iRAP\AwsWrapper\Objects\Ec2Instance::create_from_aws_item($instanceSetItem);
+                $this->m_instances[] = $ec2Instance;
+                $this->m_returned_instance_ids[] = $ec2Instance->getInstanceId();     
             }
         }
         

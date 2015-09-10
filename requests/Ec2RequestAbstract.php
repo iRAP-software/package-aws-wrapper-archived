@@ -78,14 +78,6 @@ abstract class Ec2RequestAbstract
         
         \iRAP\CoreLibs\Core::debugPrintln($debugMsg);
         
-        /* @var $response ResponseCore */
-        if (!$response->isOK())
-        {
-            $className = get_called_class();
-            $err_msg = $className . ' - error processing request: ' . print_r($response, true);
-            throw new \Exception($err_msg);
-        }
-        
         return $response;
     }
 }

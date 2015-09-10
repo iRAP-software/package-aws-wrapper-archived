@@ -25,7 +25,7 @@ class Placement
      * @param AmazonRegion $region - the region that we are placing in.
      * @return Placement $placement - the generated Placement object.
      */
-    public static function createWithAvailabilityZone(Ec2Region $region)
+    public static function createWithAvailabilityZone(AwsRegion $region)
     {
         $placement = new Placement();
         $placement->m_availability_zone = $region;
