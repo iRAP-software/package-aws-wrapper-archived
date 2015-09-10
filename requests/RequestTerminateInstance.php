@@ -39,7 +39,7 @@ class RequestTerminateInstance extends Ec2RequestAbstract
         
     }
     
-    protected function get_options_array()
+    protected function getOptionsArray()
     {
         return array();
     }
@@ -54,7 +54,7 @@ class RequestTerminateInstance extends Ec2RequestAbstract
     }
 
     
-    protected function send_request(\AmazonEC2 $ec2, array $opt)
+    protected function sendRequest(\AmazonEC2 $ec2, array $opt)
     {
         $ec2->set_region((string)$this->m_region);
         $response = $ec2->terminate_instances($this->m_instance_ids, $opt);

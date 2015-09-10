@@ -68,7 +68,7 @@ class RequestDescribeSpotInstances extends Ec2RequestAbstract
      * http://docs.aws.amazon.com/AWSSDKforPHP/latest/index.html#m=AmazonEC2/describe_regions
      * @return Array $options
      */
-    protected function get_options_array() 
+    protected function getOptionsArray() 
     {
         $options = array();
         
@@ -92,7 +92,7 @@ class RequestDescribeSpotInstances extends Ec2RequestAbstract
      * @param array $opt - the options parameter for the request.
      * @return CFResponse
      */
-    protected function send_request(\AmazonEC2 $ec2, array $opt) 
+    protected function sendRequest(\AmazonEC2 $ec2, array $opt) 
     {
         $ec2->set_region((string) $this->m_region);
         $response = $ec2->describe_spot_instance_requests($opt);

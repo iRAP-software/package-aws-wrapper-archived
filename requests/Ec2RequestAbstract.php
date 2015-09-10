@@ -13,14 +13,14 @@ abstract class Ec2RequestAbstract
     private $m_return_curl_handle = null;
     private $m_curl_opts = array();
     
-    protected abstract function get_options_array();
+    protected abstract function getOptionsArray();
     
     /**
      * 
      * @param Array $curlOpts - A set of values to pass directly into curl_setopt(), where the key 
      *                          is a pre-defined CURLOPT_* constant.
      */
-    public function set_curl_opts(Array $curlOpts)
+    public function setCurlOpts(Array $curlOpts)
     {
         $this->m_curl_opts = $curlOpts;
     }
@@ -30,7 +30,7 @@ abstract class Ec2RequestAbstract
      * This is the call that actually runs the request. It can should only be called from this 
      * abstract object in the send function as this needs to add its own properties.
      */
-    protected abstract function send_request(\AmazonEC2 $ec2, Array $opt);
+    protected abstract function sendRequest(\AmazonEC2 $ec2, Array $opt);
 
 
     /**
@@ -42,7 +42,7 @@ abstract class Ec2RequestAbstract
      *                                  true earlier as it is defaulted to false. 
      * @return void
      */
-    public function set_return_curl_handle($return_curl_handle=true)
+    public function setReturnCurlHandle($return_curl_handle=true)
     {
         $this->m_return_curl_handle=true;
     }

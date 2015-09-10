@@ -57,7 +57,7 @@ class RequestSpotInstance extends Ec2RequestAbstract
      * @param void
      * @return Array $options - the $opts parameter of the request.
      */
-    public function get_options_array()
+    public function getOptionsArray()
     {
         $options = array(
             'InstanceCount' => $this->m_num_instances,
@@ -81,7 +81,7 @@ class RequestSpotInstance extends Ec2RequestAbstract
         
         $options['AvailabilityZoneGroup'] = (String)$this->m_availability_zone;
         
-        $options['LaunchSpecification'] = $this->m_launch_specification->to_array();
+        $options['LaunchSpecification'] = $this->m_launch_specification->toArray();
         
         return $options;
     }
@@ -176,7 +176,7 @@ class RequestSpotInstance extends Ec2RequestAbstract
      * @param array $options - all the parameter/specifications.
      * @return CFResponse $response - response from the AWS API
      */
-    protected function send_request(\AmazonEC2 $ec2, array $options) 
+    protected function sendRequest(\AmazonEC2 $ec2, array $options) 
     {
         $ec2->set_region($this->m_availability_zone); # Ami ids wont be recognized without this for some reason
         $response = $ec2->request_spot_instances($this->m_price, $options);

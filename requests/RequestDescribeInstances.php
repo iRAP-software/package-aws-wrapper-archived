@@ -42,7 +42,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
         }
     }
     
-    protected function get_options_array() 
+    protected function getOptionsArray() 
     {
         $options = array();
         
@@ -68,7 +68,7 @@ class RequestDescribeInstances extends Ec2RequestAbstract
      * @param array $opt - the optional parameters to be sent.
      * @return CFResponse $response
      */
-    protected function send_request(\AmazonEC2 $ec2, array $opt) 
+    protected function sendRequest(\AmazonEC2 $ec2, array $opt) 
     {
         $ec2->set_region((String)$this->m_region);
         $response = $ec2->describe_instances($opt);
