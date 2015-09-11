@@ -245,7 +245,7 @@ class LaunchSpecification
             foreach ($this->m_networkInterfaces as $network_interface)
             {
                 /* @var $network_interface NetworkInterface */
-                $networkInterfaces[] = $network_interface->to_array();
+                $networkInterfaces[] = $network_interface->toArray();
             }
             
             $arrayForm['NetworkInterfaces'] = $networkInterfaces;

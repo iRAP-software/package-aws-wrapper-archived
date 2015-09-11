@@ -16,15 +16,27 @@ class NetworkInterface
     private $m_assosciatePublicIpAddress;
     private $m_deviceIndex;
     private $m_subnetId;
+    private $m_groups; # not sure what this represents.
     private $m_description;
     private $m_securityGroupId; # - string|array - Pass a string for a single value, or an indexed array for multiple values.
-    private $m_deleteOnTermination = false; # - boolean - Optional -
-    private $m_privateIpAddress = array();
+    private $m_deleteOnTermination;
+    private $m_privateIpAddresses; # array of private ip addresses.
     private $m_secondaryPrivateIpAddress;
+    private $m_secondaryPrivateIpAddressCount;
+    
+    # Helper member variables not directly related to SDK
+    private $m_hasSpecifiedPrimaryIp = false;
     
     
     /**
-     * 
+     * Utilize one of the public create methods to create one of these objects.
+     */
+    private function __construct(){}
+    
+    
+    
+    /**
+     * Create a NetworkInterfaceObject that represents one that already exists in Amazon
      * @param type $network_interface_id - the id of the network interface to attach to.
      * @param bool $assosciatePublicIp - whether to dynamically allocate a public ip to the NIC.
      * @param type $deviceIndex - ???
@@ -42,15 +54,15 @@ class NetworkInterface
      *                                              the primary and secondary private IP addresses.
      * param String $description - optionally set a description for the interface.
      */
-    public function __construct($network_interface_id,
-                                $assosciatePublicIp,
-                                $deviceIndex,
-                                $subnetId,
-                                $privateIp,
-                                $securityGroupId,
-                                $deleteOnTermination,
-                                $secondary_private_ip_address_count,
-                                $description='')
+    public function createFromExisting($network_interface_id,
+                                       $assosciatePublicIp,
+                                       $deviceIndex,
+                                       $subnetId,
+                                       $privateIp,
+                                       $securityGroupId,
+                                       $deleteOnTermination,
+                                       $secondary_private_ip_address_count,
+                                       $description='')
     {
         self::validate_secondary_ip_addresss_count($secondary_private_ip_address_count);
         self::validate_ip_addresses($privateIp, $secondary_private_ip_address_count);
@@ -67,40 +79,120 @@ class NetworkInterface
         $this->m_description = $description;
     }
     
+    /**
+     * Create a new NIC from scratch. This will let AWS create an ID etc.
+     * @param bool $assosciatePublicIp - whether to assosciate a public ip with the NIC.
+     * @param bool $deleteOnTermination - whether to delete this NIC when the EC2 instance is 
+     *                                    terminated.
+     * @return NetworkInterface
+     */
+    public static function createNew($assosciatePublicIp, $deleteOnTermination)
+    {
+        $networkInterface = new NetworkInterface();
+        $networkInterface->m_deleteOnTermination = $deleteOnTermination;
+        $networkInterface->m_assosciatePublicIpAddress = $assosciatePublicIp;
+        return $networkInterface;
+    }
+    
+    
+    /**
+     * Add a private IP to the network interface.
+     * @param string $ip - the private IP, e.g. 192.168.1.1
+     * @param bool $isPrimary - specify whether this is the primary private IP address. You can only
+     *                          have one primary.
+     */
+    public function addPrivateIp($ip, $isPrimary)
+    {
+        if ($isPrimary)
+        {
+            if ($this->m_hasSpecifiedPrimaryIp)
+            {
+                throw new Exception("You cannot specify two primary IPs on a network interface!");
+            }
+            
+            $this->m_hasSpecifiedPrimaryIp = true;
+        }
+        
+        $privateIp = new \stdClass();
+        $privateIp->ip = $ip;
+        $privateIp->isPrimary = $isPrimary;
+        $this->m_privateIpAddresses[] = $privateIp;
+    }
+    
     
     /**
      * Converts this object into an array form that can be used for requests.
      * @return Array - assoc array of this object for a request.
      */
-    public function to_array()
+    public function toArray()
     {
-        $privateIps = array();
+        $arrayForm = array();
         
-        foreach ($this->m_privateIpAddress as $ip)
+        if (isset($this->m_assosciatePublicIpAddress))
         {
-            /* $ip PrivateIp */
-            $privateIps[] = $ip->toArray();
+            $arrayForm['AssociatePublicIpAddress'] = $this->m_assosciatePublicIpAddress;
         }
         
-        $array_form = array(
-            'NetworkInterfaceId'             => $this->m_networkInterfaceId,
-            'AssociatePublicIpAddress'       => $this->m_assosciatePublicIpAddress,
-            'DeviceIndex'                    => $this->m_deviceIndex,
-            'SubnetId'                       => $this->m_subnetId,
-            'Description'                    => $this->m_description,
-            'SecurityGroupId'                => $this->m_securityGroupId,
-            'SecondaryPrivateIpAddressCount' => $this->m_secondaryPrivateIpAddress,
-            'DeleteOnTermination'            => $this->m_deleteOnTermination,
-        );
-        
-        if (count($privateIps) > 0)
+        if (isset($this->m_deleteOnTermination))
         {
-            $array_form['PrivateIpAddresses']  = $privateIps;
+            $arrayForm['DeleteOnTermination'] = $this->m_deleteOnTermination;
         }
         
-        return $array_form;
+        if (isset($this->m_description))
+        {
+            $arrayForm['Description'] = $this->m_description;
+        }
+        
+        if (isset($this->m_deviceIndex))
+        {
+            $arrayForm['DeviceIndex'] = $this->m_deviceIndex;
+        }
+        
+        if (isset($this->m_groups))
+        {
+            $arrayForm['Groups'] = $this->m_groups;
+        }
+        
+        if (isset($this->m_networkInterfaceId))
+        {
+            $arrayForm['NetworkInterfaceId'] = $this->m_networkInterfaceId;
+        }
+        
+        if (count($this->m_privateIpAddresses) > 0)
+        {
+            if (count($this->m_privateIpAddresses) == 1)
+            {
+                $privateIp = array_shift($this->m_privateIpAddresses);
+                $arrayForm['PrivateIpAddress'] = $privateIp->ip;
+            }
+            else
+            {
+                $privateIpAddresses = array();
+                
+                foreach ($this->m_privateIpAddresses as $privateIp)
+                {
+                    $privateIpAddresses[] = array(
+                        'Primary'          => $privateIp->isPrimary,
+                        'PrivateIpAddress' => $privateIp->ip
+                    );
+                }
+                
+                $arrayForm['PrivateIpAddresses'] = $privateIpAddresses;
+            }
+        }
+        
+        if (isset($this->m_secondaryPrivateIpAddressCount))
+        {
+            $arrayForm['SecondaryPrivateIpAddressCount'] = $this->m_secondaryPrivateIpAddressCount;
+        }
+        
+        if (isset($this->m_subnetId))
+        {
+            $arrayForm['SubnetId'] = $this->m_subnetId;
+        }
+        
+        return $arrayForm;
     }
-    
     
     
     /**
@@ -169,4 +261,3 @@ class NetworkInterface
         }
     }
 }
-
