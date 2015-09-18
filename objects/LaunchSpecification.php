@@ -179,7 +179,6 @@ class LaunchSpecification
         $arrayForm = array(
             'ImageId'       => $this->m_image_id,
             'InstanceType'  => (String)$this->m_instanceType,
-            'ImageId'       => $this->m_image_id
         );
         
         if (isset($this->m_keyName))
@@ -233,22 +232,27 @@ class LaunchSpecification
         }
         
         
-        if (isset($this->m_subnetId))
-        {
-            $arrayForm['SubnetId'] = $this->m_subnetId;
-        }
-        
         if (count($this->m_networkInterfaces) > 0)
         {
             $networkInterfaces = array();
             
-            foreach ($this->m_networkInterfaces as $network_interface)
+            foreach ($this->m_networkInterfaces as $index => $network_interface)
             {
                 /* @var $network_interface NetworkInterface */
-                $networkInterfaces[] = $network_interface->toArray();
+                $networkInterfaceArrayForm = $network_interface->toArray();
+                $networkInterfaceArrayForm['DeviceIndex'] = $index;
+                $networkInterfaces[] = $networkInterfaceArrayForm;
             }
             
             $arrayForm['NetworkInterfaces'] = $networkInterfaces;
+        }
+        else
+        {
+            # Cannot set the subnet ID if we have defined network interfaces.
+            if (isset($this->m_subnetId))
+            {
+                $arrayForm['SubnetId'] = $this->m_subnetId;
+            }
         }
         
         if (count($this->m_iamProfile) > 0)
@@ -271,11 +275,13 @@ class LaunchSpecification
         
         return $arrayForm;
     }
-
+    
+    
     private static function validateImageId($imageId)
     {
         print "validateImageId to be implemented." . PHP_EOL;
     }
+    
     
     private static function validateSecurityGroup($securityGroup)
     {
