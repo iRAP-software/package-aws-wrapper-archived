@@ -5,7 +5,7 @@ namespace iRAP\AwsWrapper\Requests;
 /*
  * Class for spot instance requests.
  * Please refer to the documentation at:
- * http://docs.aws.amazon.com/AWSSDKforPHP/latest/#m=AmazonEC2/request_spot_instances
+ * http://docs.aws.amazon.com/aws-sdk-php/v3/api/api-ec2-2015-04-15.html#runinstances
  */
 
 class RequestRunInstances extends Ec2RequestAbstract
@@ -132,8 +132,6 @@ class RequestRunInstances extends Ec2RequestAbstract
      */
     protected function sendRequest(\Aws\Ec2\Ec2Client $ec2Client, array $options) 
     {
-        /* @var $response CFResponse */
-        var_dump($options);
         $response = $ec2Client->runInstances($options);
         
         $ec2InstanceStdObjs = $response->body->instancesSet->item;
@@ -177,5 +175,4 @@ class RequestRunInstances extends Ec2RequestAbstract
      */
     public function getSpawnedInstances() { return $this->m_generatedInstances; }
 }
-
 
