@@ -168,7 +168,7 @@ class RequestSpotInstance extends Ec2RequestAbstract
             throw new \Exception('Price must be a positive value!');
         }
     }
-
+    
     
     /**
      * Sends the request to the AWS api. This is called from our parent.
@@ -204,7 +204,5 @@ class RequestSpotInstance extends Ec2RequestAbstract
     {
         return $this->m_generatedSpotRequestIds;
     }
-
 }
-
 
