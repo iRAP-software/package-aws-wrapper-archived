@@ -39,10 +39,12 @@ class RequestTerminateInstance extends Ec2RequestAbstract
         
     }
     
+    
     protected function getOptionsArray()
     {
         return array();
     }
+    
     
     /**
      * Add another instance to list of instances to terminate.
@@ -52,7 +54,7 @@ class RequestTerminateInstance extends Ec2RequestAbstract
     {
         $this->m_instance_ids[] = $instance_id;
     }
-
+    
     
     protected function sendRequest(\Aws\Ec2\Ec2Client $ec2, array $opt)
     {
@@ -60,6 +62,4 @@ class RequestTerminateInstance extends Ec2RequestAbstract
         $response = $ec2->terminate_instances($this->m_instance_ids, $opt);
         return $response;
     }
-
 }
-
